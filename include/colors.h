@@ -1,4 +1,4 @@
-#include <sdl_context.h>
+#include <gfx_context.h>
 
 //defined colors structs
 gfx_color_t red = {255, 0, 0, 255};

@@ -1,4 +1,4 @@
-#include <sdl_context.h>
+#include <gfx_context.h>
 #include <colors.h>
 #include <stdlib.h>
 
