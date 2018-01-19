@@ -80,8 +80,9 @@ void gfx_context_quit(gfx_context_t *context)
     context->is_running = !context->is_running;
 }
 
-gfx_color_t gfx_set_colors(gfx_color_t original_color, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+gfx_color_t gfx_set_colors(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
+    gfx_color_t original_color;
     original_color.r = r;
     original_color.g = g;
     original_color.b = b;
@@ -97,15 +98,15 @@ void gfx_update(gfx_context_t* context)
         SDL_PumpEvents();
         
         //clear 
-        gfx_context_clear(context, black);
+        gfx_context_clear(context, black); 
 
         //randomize color for the square each tick
-        gfx_color_t new_color = gfx_set_colors(red, rand()%255, rand()%255, rand()%255, rand()%255);
+        gfx_color_t new_color = gfx_set_colors(rand()%255, rand()%255, rand()%255, rand()%255);
 
         //draw square
-        for(int x=context->half_width;x<context->half_width+100;x++)
+        for(int x=context->half_width;x<context->half_width+150;x++)
         {
-            for(int y=context->half_height;y<context->half_height+100;y++)
+            for(int y=context->half_height;y<context->half_height+150;y++)
             {
                 gfx_context_put_pixel(context, x, y, new_color);
             }

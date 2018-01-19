@@ -13,7 +13,7 @@ typedef struct gfx_color{
     uint8_t a;
 }gfx_color_t;
 
-gfx_color_t gfx_set_colors(gfx_color_t original_color, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+gfx_color_t gfx_set_colors(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 typedef struct gfx_context{
     SDL_Window* window;
@@ -30,8 +30,6 @@ typedef struct gfx_context{
 }gfx_context_t;
 
 gfx_context_t* gfx_init(const char* title, uint32_t width, uint32_t height);
-static void sdl_context_blit(gfx_context_t *context);
-static void sdl_context_clear(gfx_context_t *context, gfx_color_t color);
 void gfx_put_pixel(gfx_context_t *context, int x, int y, gfx_color_t color);
 void gfx_context_dispose(gfx_context_t* context);
 Uint8 gfx_get_key_state(gfx_context_t* context, SDL_Scancode code);
