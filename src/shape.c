@@ -21,7 +21,7 @@ void gfx_shape_draw(gfx_context_t* context, gfx_shape_t shape)
     {
         for(unsigned int y = 0; y < shape.h; y++)
         {
-            gfx_put_pixel(context, (x + (shape.x - (shape.w / 2))), (y + (shape.y - (shape.h / 2))), shape.color);
+            gfx_put_pixel(context, (x + (shape.x - (shape.w / 2))), (y + (shape.y - (shape.h / 2))) , shape.color);
         }
     }
 }
