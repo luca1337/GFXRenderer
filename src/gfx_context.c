@@ -4,30 +4,19 @@
 #include <shape.h>
 #include <time.h>
 
+#define MAX 255
+
 gfx_context_t* gfx_init(const char* title, unsigned int width, unsigned int height)
 {
     gfx_context_t* context = malloc(sizeof(gfx_context_t));
-    if(!context)
-        return ((void*)0);
 
-    SDL_Init(SDL_INIT_VIDEO);
+    if(!context) return ((void*)0);
+        
+    SDL_Init(SDL_INIT_AUDIO|SDL_INIT_VIDEO);
 
-    context->window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
-
-    if(!context->window)
+    if(SDL_CreateWindowAndRenderer(width, height, 0, &context->window, &context->renderer))
     {
-        SDL_Quit();
-        free(context);
-        return ((void*)0);
-    }
-
-    context->renderer = SDL_CreateRenderer(context->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
-    if(!context->renderer)
-    {
-        SDL_DestroyWindow(context->window);
-        SDL_Quit();
-        free(context);
+        fprintf(stderr, "could not instance any context. %s", SDL_GetError());
         return ((void*)0);
     }
 
@@ -94,11 +83,10 @@ gfx_color_t gfx_set_colors(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 
 void gfx_update(gfx_context_t* context)
 {
-    //randomize color for the square each tick
     srand(time(NULL));
-    gfx_color_t new_color = gfx_set_colors(rand()%255, rand()%255, rand()%255, rand()%255);
+    gfx_color_t new_color = gfx_set_colors(rand()%MAX, rand()%MAX, rand()%MAX, rand()%MAX);
 
-    gfx_shape_t* quad = gfx_shape_new(context->half_width, context->half_height, 100, 100, new_color);
+    gfx_shape_t quad = gfx_shape_new(context->half_width, context->half_height, 100, 100, new_color);
 
     while(context->is_running)
     {
@@ -118,9 +106,6 @@ void gfx_update(gfx_context_t* context)
         //blit
         gfx_context_blit(context);
     }
-
-    //free shape
-    gfx_shape_dispose(quad);
 
     //free memory when exiting
     gfx_context_dispose(context);
