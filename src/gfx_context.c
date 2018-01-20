@@ -1,6 +1,8 @@
 #include <gfx_context.h>
 #include <colors.h>
 #include <stdlib.h>
+#include <shape.h>
+#include <time.h>
 
 gfx_context_t* gfx_init(const char* title, unsigned int width, unsigned int height)
 {
@@ -61,7 +63,7 @@ static void gfx_context_clear(gfx_context_t *context, gfx_color_t color)
     SDL_RenderClear(context->renderer);
 }
 
-void gfx_context_put_pixel(gfx_context_t *context, int x, int y, gfx_color_t color)
+void gfx_put_pixel(gfx_context_t *context, int x, int y, gfx_color_t color)
 {
     SDL_SetRenderDrawColor(context->renderer, color.r, color.g, color.b, color.a);
     SDL_RenderDrawPoint(context->renderer, x, y);
@@ -92,25 +94,22 @@ gfx_color_t gfx_set_colors(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 
 void gfx_update(gfx_context_t* context)
 {
+    //randomize color for the square each tick
+    srand(time(NULL));
+    gfx_color_t new_color = gfx_set_colors(rand()%255, rand()%255, rand()%255, rand()%255);
+
+    gfx_shape_t* quad = gfx_shape_new(context->half_width, context->half_height, 100, 100, new_color);
+
     while(context->is_running)
     {
         //update event queue and internal input device state
         SDL_PumpEvents();
         
-        //clear 
+        //clear color window
         gfx_context_clear(context, black); 
 
-        //randomize color for the square each tick
-        gfx_color_t new_color = gfx_set_colors(rand()%255, rand()%255, rand()%255, rand()%255);
-
-        //draw square
-        for(int x=context->half_width;x<context->half_width+150;x++)
-        {
-            for(int y=context->half_height;y<context->half_height+150;y++)
-            {
-                gfx_context_put_pixel(context, x, y, new_color);
-            }
-        }
+        //draw simple shape
+        gfx_shape_draw(context, quad);
 
         //quit key code
         if(gfx_context_get_key_state(context, SDL_SCANCODE_ESCAPE))
@@ -119,6 +118,9 @@ void gfx_update(gfx_context_t* context)
         //blit
         gfx_context_blit(context);
     }
+
+    //free shape
+    gfx_shape_dispose(quad);
 
     //free memory when exiting
     gfx_context_dispose(context);

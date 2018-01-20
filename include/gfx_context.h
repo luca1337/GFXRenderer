@@ -4,7 +4,11 @@
 
 #include <string.h>
 #include <stdio.h>
+#ifdef _WIN32
 #include <SDL/SDL.h>
+#else
+#include <SDL/SDL2.h>
+#endif
 
 typedef struct gfx_color{
     uint8_t r;
