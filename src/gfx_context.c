@@ -84,9 +84,10 @@ gfx_color_t gfx_set_colors(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 void gfx_update(gfx_context_t* context)
 {
     srand(time(NULL));
-    gfx_color_t new_color = gfx_set_colors(rand()%MAX, rand()%MAX, rand()%MAX, rand()%MAX);
+    gfx_color_t color = gfx_set_colors(rand()%MAX, rand()%MAX, rand()%MAX, rand()%MAX);
 
-    gfx_shape_t quad = gfx_shape_new(context->half_width, context->half_height, 100, 100, new_color);
+    gfx_shape_t shape01 = gfx_shape_new(context->half_width, context->half_height, 30, 100, color);
+    gfx_shape_t shape02 = gfx_shape_new(context->half_width, context->half_height, 100, 30, color);
 
     while(context->is_running)
     {
@@ -96,8 +97,9 @@ void gfx_update(gfx_context_t* context)
         //clear color window
         gfx_context_clear(context, black); 
 
-        //draw simple shape
-        gfx_shape_draw(context, quad);
+        //draw simple shapes
+        gfx_shape_draw(context, shape01);
+        gfx_shape_draw(context, shape02);
 
         //quit key code
         if(gfx_context_get_key_state(context, SDL_SCANCODE_ESCAPE))

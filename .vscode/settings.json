@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "colors.h": "c",
-        "stdio.h": "c",
-        "gfx_context.h": "c",
-        "stdlib.h": "c",
-        "string.h": "c"
-    }
-}
